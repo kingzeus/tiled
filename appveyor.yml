@@ -16,14 +16,14 @@ install:
 build_script:
   - FOR /F "tokens=*" %%i in ('git describe') do SET COMMITNOW=%%i
   - if defined APPVEYOR_REPO_TAG_NAME (
-      set VERSION=%APPVEYOR_REPO_TAG_NAME:~1%
-      set BUILD_INFO_VERSION=%VERSION%
-    ) ELSE (
-      set VERSION=%DATE:~10,4%-%DATE:~4,2%-%DATE:~7,2%
-      set BUILD_INFO_VERSION=%COMMITNOW%
-    )
-  - if defined APPVEYOR_REPO_TAG_NAME set VERSION=%APPVEYOR_REPO_TAG_NAME:~1%
-  - echo Building Tiled daily %VERSION%... (from %COMMITNOW%)
+  -   set VERSION=%APPVEYOR_REPO_TAG_NAME:~1%
+  -   set BUILD_INFO_VERSION=%VERSION%
+  -   echo Building Tiled %VERSION%... (from %COMMITNOW%)
+  - ) ELSE (
+  -   set VERSION=%DATE:~10,4%-%DATE:~4,2%-%DATE:~7,2%
+  -   set BUILD_INFO_VERSION=%COMMITNOW%
+  -   echo Building Tiled daily %VERSION%... (from %COMMITNOW%)
+  - )
   - qmake tiled.pro "CONFIG+=release" "QMAKE_CXXFLAGS+=-DBUILD_INFO_VERSION=%BUILD_INFO_VERSION%"
   - mingw32-make
 
